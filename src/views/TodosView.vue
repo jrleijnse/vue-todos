@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { uid } from 'uid';
 import { Icon } from '@iconify/vue';
 
@@ -25,6 +25,10 @@ watch(
     deep: true
   }
 );
+
+const todoCompleted = computed(() => {
+  return todoList.value.every((todo) => todo.isCompleted);
+});
 
 // Basically state
 const createTodo = (todo) => {
@@ -77,6 +81,10 @@ const deleteTodo = (todoId) => {
     <p v-else class="todos-msg">
       <Icon icon="noto-v1:sad-but-relieved-face" />
       <span>You have no todo's to complete! Add one!</span>
+    </p>
+    <p v-if="todoCompleted && todoList.length > 0" class="todos-msg">
+      <Icon icon="noto-v1:party-popper" />
+      <span>All tasks completed!</span>
     </p>
   </main>
 </template>
